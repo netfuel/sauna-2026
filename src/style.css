@@ -1,0 +1,184 @@
+@font-face {
+  font-family: 'Proto Mono';
+  src: url('/fonts/Proto-Mono-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d0d0d;
+  --text: #f0f0f0;
+  --text-dim: #888;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Proto Mono', ui-monospace, monospace;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.lightbox-open { overflow: hidden; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Three.js canvas (sits behind all DOM) ---------- */
+#gallery-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: block;
+}
+
+/* ---------- Corner nav ---------- */
+.corner-nav {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+.nav {
+  position: absolute;
+  pointer-events: auto;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  padding: 22px 26px;
+  transition: opacity 0.25s ease;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+.nav:hover { opacity: 0.55; }
+.nav.tl { top: 0; left: 0; }
+.nav.tr { top: 0; right: 0; }
+.nav.bl { bottom: 0; left: 0; }
+.nav.br { bottom: 0; right: 0; }
+
+.site-logo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(112px, 19.6vw, 266px);
+  z-index: 101;
+  pointer-events: none;
+}
+
+
+/* ---------- Scroll cue ---------- */
+.scroll-cue {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  letter-spacing: 0.35em;
+  color: #fff;
+  z-index: 101;
+  pointer-events: none;
+  animation: bob 3s ease-in-out infinite;
+  transition: opacity 0.6s ease;
+}
+@keyframes bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(-8px); }
+}
+
+/* ---------- Gallery spacer — height set by JS ---------- */
+#gallery-spacer { position: relative; z-index: 0; }
+
+/* ---------- Lightbox ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 40px;
+}
+.lightbox[hidden] { display: none; }
+.lightbox.active { opacity: 1; }
+
+.lightbox-content {
+  max-width: 88vw;
+  max-height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox-content img,
+.lightbox-content video {
+  max-width: 88vw;
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  display: block;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 36px;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1;
+  padding: 8px 14px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.lightbox-close:hover { opacity: 1; }
+
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1;
+  padding: 12px 20px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  z-index: 201;
+}
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+.lightbox-prev:hover,
+.lightbox-next:hover { opacity: 1; }
+
+/* Fly-out element: starts at mesh screen rect, JS animates to center */
+.lightbox-flyer {
+  position: fixed;
+  z-index: 300;
+  object-fit: contain;
+  pointer-events: none;
+}
+.lightbox-flyer--fly {
+  transition: left 0.45s cubic-bezier(0.22,1,0.36,1),
+              top 0.45s cubic-bezier(0.22,1,0.36,1),
+              width 0.45s cubic-bezier(0.22,1,0.36,1),
+              height 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 768px) {
+  .nav { font-size: 11px; padding: 16px 18px; letter-spacing: 0.15em; }
+}

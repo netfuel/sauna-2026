@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAUNA</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <img src="/media/hero/sauna-logo.png" class="site-logo" alt="SAUNA" />
+
+  <nav class="corner-nav">
+    <a href="#" target="_blank" rel="noopener" class="nav tl">SHOP</a>
+    <a href="#" target="_blank" rel="noopener" class="nav tr">ZINE</a>
+    <a href="#" target="_blank" rel="noopener" class="nav bl">INSTA</a>
+    <a href="#" target="_blank" rel="noopener" class="nav br">CONTACT</a>
+  </nav>
+
+  <div class="scroll-cue">SCROLL</div>
+
+  <!-- Scroll spacer — height set by gallery.js to create scrollable length for the helix -->
+  <div id="gallery-spacer"></div>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" aria-label="Close">×</button>
+    <button class="lightbox-prev" aria-label="Previous">&#8592;</button>
+    <button class="lightbox-next" aria-label="Next">&#8594;</button>
+    <div class="lightbox-content"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
