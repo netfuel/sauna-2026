@@ -178,6 +178,43 @@ a { color: inherit; text-decoration: none; }
               height 0.45s cubic-bezier(0.22,1,0.36,1);
 }
 
+/* ---------- Preloader ---------- */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+#preloader.fade-out { opacity: 0; }
+
+/* Ring wrapper — logo sits centered inside the Lottie SVG ring */
+.preloader-ring {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#preloader-lottie {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.preloader-logo {
+  position: relative;
+  z-index: 1;
+  width: 84px;
+}
+
 /* ---------- Mobile ---------- */
 @media (max-width: 768px) {
   .nav { font-size: 11px; padding: 16px 18px; letter-spacing: 0.15em; }
