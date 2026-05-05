@@ -11,6 +11,8 @@ const BASE_WIDTH = 90;
 const WIDTH_VARIANCE = 150;
 const LERP = 0.07;
 const VERTICAL_START = 420;
+const FADE_STAGGER = 55;   // ms between each item starting to fade in
+const FADE_DURATION = 500; // ms for each item's fade
 
 const DISCO_BALL = { src: '/media/hero/disco-ball.jpg', type: 'image', width: 2200, height: 2800 };
 
@@ -74,9 +76,9 @@ export function initGallery(spacerEl, onItemClick) {
     const h = w / Math.max(aspect, 0.1);
 
     const geo = new THREE.PlaneGeometry(w, h);
-    const mat = new THREE.MeshBasicMaterial({ color: 0x1c1c1c });
+    const mat = new THREE.MeshBasicMaterial({ color: 0x1c1c1c, transparent: true, opacity: 0 });
     const mesh = new THREE.Mesh(geo, mat);
-    mesh.userData = { index: i, data };
+    mesh.userData = { index: i, data, fadeStart: performance.now() + i * FADE_STAGGER };
     scene.add(mesh);
     planes.push(mesh);
 
@@ -84,7 +86,12 @@ export function initGallery(spacerEl, onItemClick) {
     if (texSrc) {
       loader.load(texSrc, (tex) => {
         tex.colorSpace = THREE.SRGBColorSpace;
-        mesh.material = new THREE.MeshBasicMaterial({ map: tex });
+        // Preserve current opacity so the swap doesn't cause a flash
+        mesh.material = new THREE.MeshBasicMaterial({
+          map: tex,
+          transparent: true,
+          opacity: mesh.material.opacity,
+        });
       });
     }
   });
@@ -153,6 +160,7 @@ export function initGallery(spacerEl, onItemClick) {
     camera.position.y = -smoothScroll * CAMERA_SPEED;
     camera.updateMatrixWorld();
 
+    const now = performance.now();
     planes.forEach((mesh, i) => {
       const angle = i * ANGLE_STEP + twist;
       mesh.position.set(
@@ -162,6 +170,15 @@ export function initGallery(spacerEl, onItemClick) {
       );
       mesh.lookAt(camera.position);
       mesh.quaternion.multiply(tiltQuats[i]);
+
+      // Sequential spiral fade-in (smoothstep easing)
+      if (mesh.material.opacity < 1) {
+        const elapsed = now - mesh.userData.fadeStart;
+        if (elapsed > 0) {
+          const t = Math.min(elapsed / FADE_DURATION, 1);
+          mesh.material.opacity = t * t * (3 - 2 * t);
+        }
+      }
     });
 
     renderer.render(scene, camera);
