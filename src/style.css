@@ -45,7 +45,7 @@ a { color: inherit; text-decoration: none; }
 .nav {
   position: absolute;
   pointer-events: auto;
-  font-size: 14px;
+  font-size: 17px;
   letter-spacing: 0.18em;
   padding: 22px 26px;
   transition: opacity 0.25s ease;
@@ -296,5 +296,5 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 768px) {
-  .nav { font-size: 11px; padding: 16px 18px; letter-spacing: 0.15em; }
+  .nav { font-size: 13px; letter-spacing: 0.15em; padding: 28px 28px; min-width: 44px; min-height: 44px; }
 }
