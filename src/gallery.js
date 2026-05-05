@@ -116,15 +116,19 @@ export function initGallery(spacerEl, onItemClick) {
     }
   });
 
-  // Tap (mobile)
-  let touchStartX = 0, touchStartY = 0;
+  // Tap (mobile) — 24px threshold handles Android jitter; time guard rejects slow drags
+  let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
   canvas.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
   }, { passive: true });
   canvas.addEventListener('touchend', (e) => {
     const t = e.changedTouches[0];
-    if (Math.abs(t.clientX - touchStartX) < 12 && Math.abs(t.clientY - touchStartY) < 12) {
+    const dx = Math.abs(t.clientX - touchStartX);
+    const dy = Math.abs(t.clientY - touchStartY);
+    const dt = Date.now() - touchStartTime;
+    if (dx < 24 && dy < 24 && dt < 600) {
       const hits = doRaycast(t.clientX, t.clientY);
       if (hits.length) {
         const mesh = hits[0].object;

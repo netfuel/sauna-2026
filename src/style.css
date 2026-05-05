@@ -32,6 +32,7 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   z-index: 1;
   display: block;
+  touch-action: manipulation;
 }
 
 /* ---------- Corner nav ---------- */
