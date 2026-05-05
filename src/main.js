@@ -43,6 +43,27 @@ setTimeout(dismissPreloader, 4000);
 const { open: openLightbox } = initLightbox(document.getElementById('lightbox'));
 initGallery(document.getElementById('gallery-spacer'), openLightbox);
 
+// --- About modal ---
+const aboutModal = document.getElementById('about-modal');
+const aboutTrigger = document.querySelector('.about-trigger');
+const aboutClose = document.querySelector('.about-close');
+
+function openAbout() {
+  aboutModal.hidden = false;
+  document.body.classList.add('lightbox-open');
+  requestAnimationFrame(() => aboutModal.classList.add('active'));
+}
+function closeAbout() {
+  aboutModal.classList.remove('active');
+  document.body.classList.remove('lightbox-open');
+  aboutModal.addEventListener('transitionend', () => { aboutModal.hidden = true; }, { once: true });
+}
+
+aboutTrigger.addEventListener('click', openAbout);
+aboutClose.addEventListener('click', closeAbout);
+aboutModal.addEventListener('click', (e) => { if (e.target === aboutModal) closeAbout(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !aboutModal.hidden) closeAbout(); });
+
 const cue = document.querySelector('.scroll-cue');
 window.addEventListener('scroll', () => {
   cue.style.opacity = window.scrollY > 80 ? '0' : '1';

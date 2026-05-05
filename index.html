@@ -19,7 +19,7 @@
     <a href="https://public-domain.co/collections/sauna" target="_blank" rel="noopener" class="nav tl">SHOP</a>
     <a href="https://forms.gle/BskLFBjNCjDZrBASA" target="_blank" rel="noopener" class="nav tr">ZINE</a>
     <a href="https://www.instagram.com/saunamemphis" target="_blank" rel="noopener" class="nav bl">INSTA</a>
-    <a href="#" target="_blank" rel="noopener" class="nav br">CONTACT</a>
+    <button class="nav br about-trigger">ABOUT</button>
   </nav>
 
   <div class="scroll-cue">SCROLL</div>
@@ -32,6 +32,15 @@
     <button class="lightbox-prev" aria-label="Previous">&#8592;</button>
     <button class="lightbox-next" aria-label="Next">&#8594;</button>
     <div class="lightbox-content"></div>
+  </div>
+
+  <!-- About modal -->
+  <div class="about-modal" id="about-modal" hidden>
+    <button class="about-close" aria-label="Close">×</button>
+    <div class="about-content">
+      <h2 class="about-heading">ABOUT SAUNA</h2>
+      <p>Sauna started as a simple idea: bring house and disco to the Bible Belt through the form of a dance party. Ten years later, it's grown into something bigger, a quarterly event series, a zine, a mixtape, and a community anchored in queer joy and ecstatic dance. The party has lived in many forms and many locations over the decade, but its pulse has never changed. We are house, disco, funk, and soul.</p>
+    </div>
   </div>
 
   <script type="module" src="/src/main.js"></script>
