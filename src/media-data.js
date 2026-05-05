@@ -485,12 +485,6 @@ export const galleryItems = [
     "height": 788
   },
   {
-    "src": "/media/gallery/zine-pic-1.jpg",
-    "type": "image",
-    "width": 1400,
-    "height": 1153
-  },
-  {
     "src": "/media/gallery/dsc04517.jpg",
     "type": "image",
     "width": 788,
