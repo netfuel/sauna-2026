@@ -64,7 +64,5 @@ aboutClose.addEventListener('click', closeAbout);
 aboutModal.addEventListener('click', (e) => { if (e.target === aboutModal) closeAbout(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !aboutModal.hidden) closeAbout(); });
 
-const cue = document.querySelector('.scroll-cue');
-window.addEventListener('scroll', () => {
-  cue.style.opacity = window.scrollY > 80 ? '0' : '1';
-}, { passive: true });
+// Scroll cue — hide immediately since we start mid-helix
+document.querySelector('.scroll-cue').style.opacity = '0';
