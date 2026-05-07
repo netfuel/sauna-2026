@@ -6,6 +6,7 @@ export function initLightbox(lightboxEl) {
 
   let currentIndex = 0;
   let allItems = [];
+  let openedAt = 0;
 
   function buildMedia(data) {
     if (data.type === 'image') {
@@ -34,6 +35,7 @@ export function initLightbox(lightboxEl) {
   }
 
   function open(data, index, rect, items) {
+    openedAt = Date.now();
     currentIndex = index;
     allItems = items;
 
@@ -107,7 +109,11 @@ export function initLightbox(lightboxEl) {
   closeBtn.addEventListener('click', close);
   prevBtn.addEventListener('click', () => navigate(-1));
   nextBtn.addEventListener('click', () => navigate(1));
-  lightboxEl.addEventListener('click', (e) => { if (e.target === lightboxEl) close(); });
+  // Guard: ignore backdrop clicks within 400ms of open — prevents Android's
+  // synthetic click (fired after touchend) from immediately closing the lightbox.
+  lightboxEl.addEventListener('click', (e) => {
+    if (e.target === lightboxEl && Date.now() - openedAt > 400) close();
+  });
   document.addEventListener('keydown', (e) => {
     if (lightboxEl.hidden) return;
     if (e.key === 'Escape') close();
