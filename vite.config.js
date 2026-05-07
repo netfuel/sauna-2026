@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 export default defineConfig({
-  plugins: [],
+  plugins: [cloudflare()],
   publicDir: 'public',
   build: {
     assetsInlineLimit: 0,
