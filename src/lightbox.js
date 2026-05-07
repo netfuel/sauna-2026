@@ -18,6 +18,7 @@ export function initLightbox(lightboxEl) {
       el.src = data.src;
       el.controls = true;
       el.autoplay = true;
+      el.muted = true;      // required for autoplay on Android Chrome
       el.playsInline = true;
       return el;
     }
@@ -27,7 +28,9 @@ export function initLightbox(lightboxEl) {
     const v = content.querySelector('video');
     if (v) { v.pause(); v.removeAttribute('src'); v.load(); }
     content.innerHTML = '';
-    content.appendChild(buildMedia(data));
+    const el = buildMedia(data);
+    content.appendChild(el);
+    if (el.tagName === 'VIDEO') el.play().catch(() => {});
   }
 
   function open(data, index, rect, items) {
@@ -51,6 +54,7 @@ export function initLightbox(lightboxEl) {
     const mediaEl = buildMedia(data);
     mediaEl.style.opacity = '0';
     content.appendChild(mediaEl);
+    if (mediaEl.tagName === 'VIDEO') mediaEl.play().catch(() => {});
 
     lightboxEl.hidden = false;
     document.body.classList.add('lightbox-open');

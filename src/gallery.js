@@ -152,26 +152,27 @@ export function initGallery(spacerEl, onItemClick) {
     }
   });
 
-  // Tap (mobile) — 24px threshold handles Android jitter; time guard rejects slow drags
-  let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+  // Tap (mobile) — hit-test at touchstart so Android scroll can't shift meshes before touchend
+  let touchStartX = 0, touchStartY = 0, touchStartTime = 0, touchHitMesh = null;
   canvas.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
     touchStartTime = Date.now();
+    // Capture the hit immediately while mesh positions are still under the finger
+    const hits = doRaycast(t.clientX, t.clientY);
+    touchHitMesh = hits.length ? hits[0].object : null;
   }, { passive: true });
   canvas.addEventListener('touchend', (e) => {
     const t = e.changedTouches[0];
     const dx = Math.abs(t.clientX - touchStartX);
     const dy = Math.abs(t.clientY - touchStartY);
     const dt = Date.now() - touchStartTime;
-    if (dx < 24 && dy < 24 && dt < 600) {
-      const hits = doRaycast(t.clientX, t.clientY);
-      if (hits.length) {
-        const mesh = hits[0].object;
-        const rect = getScreenRect(mesh, camera);
-        onItemClick(mesh.userData.data, mesh.userData.index, rect, items);
-      }
+    if (dx < 24 && dy < 24 && dt < 600 && touchHitMesh) {
+      const rect = getScreenRect(touchHitMesh, camera);
+      onItemClick(touchHitMesh.userData.data, touchHitMesh.userData.index, rect, items);
     }
+    touchHitMesh = null;
   }, { passive: true });
 
   window.addEventListener('resize', () => {
